@@ -1,4 +1,5 @@
 import streamlit as st
+import subprocess
 import os
 
 # Force Streamlit to use the correct port
@@ -7,7 +8,16 @@ PORT = int(os.environ.get("PORT", 10000))
 st.set_page_config(page_title="My App")
 
 st.title("My Deployed Streamlit App")
-st.write("Hello, this is my web app!")
+
+# Convert the notebook to HTML
+subprocess.run(["python3", "-m", "jupyter", "nbconvert", "--to", "html", "Assignment7.ipynb"])
+
+# Read the converted HTML file
+with open("Assignment7.html", "r", encoding="utf-8") as f:
+    notebook_html = f.read()
+
+# Display the HTML in Streamlit
+st.components.v1.html(notebook_html, height=800, scrolling=True)
 
 if __name__ == "__main__":
     # Run Streamlit with explicit config
